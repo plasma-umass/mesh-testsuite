@@ -208,32 +208,8 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None):
         print('%s\t%.3f' % (config.name, end - start))
 
 
-def test_fragperf(detailed_mesh_stats=False, enabled_configs=None):
-    '''
-    Given a file containing commands, run them against each
-    redis-server, recording memory usage.
-    '''
-
-    for config in configs:
-        if config.skip:
-            continue
-        if enabled_configs and config.name not in enabled_configs:
-            continue
-
-        env = ''
-        if config.env:
-            env = config.env + ' '
-
-        start = time.time()
-        run_cmd(env + 'ruby ./frag.rb').join()
-        end = time.time()
-
-        print('%s\t%.3f' % (config.name, end - start))
-
-
 TESTS = {
     'frag': test_frag,
-    'fragperf': test_fragperf,
 }
 
 def main():
