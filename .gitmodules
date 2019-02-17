@@ -1,0 +1,6 @@
+[submodule "mesh"]
+	path = mesh
+	url = https://github.com/plasma-umass/Mesh
+[submodule "1-redis"]
+	path = 1-redis
+	url = https://github.com/bpowers/redis-harness
