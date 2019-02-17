@@ -1,0 +1,13 @@
+*~
+*.d
+*.o
+*.so
+*.pyc
+TAGS
+__pycache__
+/perf.data
+/perf.data.old
+/test/docker/*/mstatgcc
+/test/docker/*/mstat
+/test/spec/data
+/coverage
