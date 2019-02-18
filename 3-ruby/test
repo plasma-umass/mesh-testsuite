@@ -148,6 +148,10 @@ def test_perf(data_dir='.', detailed_mesh_stats=False, enabled_configs=None):
                 continue
 
             cmd = 'ruby ./frag.rb'
+            env = ''
+            if config.env:
+                env = '%s ' % (config.env)
+            cmd = '%s%s' % (env, cmd)
 
             start = time.time()
             run_cmd(cmd).join()
