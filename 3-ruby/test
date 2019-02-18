@@ -87,11 +87,20 @@ def getpid(name):
     return int(candidates[-1].split()[0])
 
 
-def test_frag(detailed_mesh_stats=False, enabled_configs=None):
+def test_frag(data_dir='.', detailed_mesh_stats=False, enabled_configs=None):
     '''
     Given a file containing commands, run them against each
     redis-server, recording memory usage.
     '''
+
+    try:
+        os.mkdir(data_dir)
+    except:
+        pass
+    try:
+        os.mkdir(path.join(data_dir, 'memory'))
+    except:
+        pass
 
     for config in configs:
         if config.skip:
@@ -105,8 +114,8 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None):
             env = ''
             if config.env:
                 env = '-env ' + config.env
-            mstat_results_path = '' % (config.name, time.time())
-            cmd = 'mstat -o ruby-frag-%s.%d.tsv %s -freq %d -- %s' % (mstat_results_path, env, FREQ, cmd)
+            mstat_results_path = path.join(data_dir, 'memory', 'ruby-frag-%s.%d.tsv' % (config.name, time.time()))
+            cmd = 'mstat -o %s %s -freq %d -- %s' % (mstat_results_path, env, FREQ, cmd)
 
         start = time.time()
         run_cmd(cmd).join()
@@ -115,8 +124,43 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None):
         print('%s\t%.3f' % (config.name, end - start))
 
 
+def test_perf(data_dir='.', detailed_mesh_stats=False, enabled_configs=None):
+    '''
+    Given a file containing commands, run them against each
+    redis-server, recording memory usage.
+    '''
+
+    try:
+        os.mkdir(data_dir)
+    except:
+        pass
+    try:
+        os.mkdir(path.join(data_dir, 'speed'))
+    except:
+        pass
+
+    with open(path.join(data_dir, 'speed', 'ruby-perf.%s.tsv' % (time.time(),)), 'w') as results:
+        results.write('config\tseconds\n')
+        for config in configs:
+            if config.skip:
+                continue
+            if enabled_configs and config.name not in enabled_configs:
+                continue
+
+            cmd = 'ruby ./frag.rb'
+
+            start = time.time()
+            run_cmd(cmd).join()
+            end = time.time()
+
+            result_row = '%s\t%.3f\n' % (config.name, end - start)
+            sys.stdout.write(result_row)
+            results.write(result_row)
+
+
 TESTS = {
     'frag': test_frag,
+    'perf': test_perf,
 }
 
 def main():
@@ -126,6 +170,7 @@ def main():
     parser.add_argument('-v', action='store_const', const=True, help='verbose logging')
     parser.add_argument('--config', nargs='+', help='specific configs to run')
     parser.add_argument('tests', nargs='*', default=sorted(TESTS.keys()), help='specific tests to run')
+    parser.add_argument('--data-dir', type=str, default='.', help='where to store results')
     parser.add_argument('--runs', type=int, default=5, help='Number of runs to do')
     args = parser.parse_args()
 
@@ -136,7 +181,9 @@ def main():
         for i in range(args.runs):
             # shuffle configs so that results aren't artifacts of order
             shuffle(configs)
-            TESTS[test](enabled_configs=args.config)
+            TESTS[test](enabled_configs=args.config, data_dir=args.data_dir)
+            # try to give the CPU a sec to cool off
+            time.sleep(1)
 
 
 if __name__ == '__main__':
