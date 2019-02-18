@@ -118,8 +118,11 @@ def test_frag(data_dir='.', detailed_mesh_stats=False, enabled_configs=None):
             cmd = 'mstat -o %s %s -freq %d -- %s' % (mstat_results_path, env, FREQ, cmd)
 
         start = time.time()
-        run_cmd(cmd).join()
+        c = run_cmd(cmd).join()
         end = time.time()
+        if c.returncode != 0:
+            print(c.stderr)
+            print(':ohno:')
 
         print('%s\t%.3f' % (config.name, end - start))
 
