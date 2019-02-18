@@ -21,4 +21,4 @@ WORKDIR /src
 
 COPY . .
 
-CMD [ "./test" ]
+CMD [ "./test", "--data-dir=/data/3-ruby" ]
