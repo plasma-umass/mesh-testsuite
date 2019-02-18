@@ -7,6 +7,7 @@ import time
 
 from collections import defaultdict
 from os import path
+from random import shuffle
 from sys import stderr, argv
 from subprocess import Popen, PIPE
 from shutil import copyfile
@@ -22,73 +23,6 @@ FREQ = 10
 ROOT_DIR = os.getcwd()
 
 TEST_DURATION = 10 # seconds
-
-DELIM = '>>>>>>>>>>' # delimits different mesh dumps
-
-
-def print_distribution(miniheap_lines):
-    size_classes = open_data(miniheap_lines)
-    sizes = sorted(size_classes.keys(), reverse=True)
-
-    total_size = 0
-    live_size = 0
-    meshed_size = 0
-
-    for size in sizes:
-        spans = size_classes[size]
-        total_size += sum([s.size * s.length for s in spans])
-        live_size += sum([s.size * s.n_objects for s in spans])
-        meshed_size += sum([s.size * s.length * (s.n_meshes - 1) for s in spans])
-
-    print('Total heap size: %.1f MiB' % (total_size * MB,))
-    print('Live  heap size: %.1f MiB' % (live_size * MB,))
-    print('Meshed eap size: %.1f MiB' % (meshed_size * MB,))
-
-    for size in sizes:
-        spans = size_classes[size]
-        occ = 0.0
-        span_total = sum([s.size * s.length for s in spans]) or 0.0
-        span_live = sum([s.size * s.n_objects for s in spans]) or 0.0
-        span_meshed = sum([s.size * s.length * (s.n_meshes - 1) for s in spans]) or 0.0
-
-        if len(spans) > 0:
-            bitlen = spans[0].length
-            bitcount = bitlen * len(spans)
-            bits = 0
-            meshes = defaultdict(int)
-            counts = defaultdict(int)
-
-            for span in spans:
-                n = span.n_objects
-                bits += n
-                counts[n] += 1
-                meshes[span.n_meshes] += 1
-
-            occ = (float(bits) / bitcount) * 100.0
-
-            print('\t%5d: %d spans (avg occ: %.2f) -- %.2f/%.2f (%.2f) MiB' %
-                  (size, len(spans), occ, span_live * MB, span_total * MB, span_meshed * MB))
-
-            for n in sorted(meshes.keys()):
-                print('\t\t\t%d: %d' % (n, meshes[n]))
-
-            if len(spans) > 0 and size == 256:
-                for i in range(0, 16):
-                    pct = float(counts[i]) / len(spans)
-                    # print('\t\t%2d: %5d  %.2f' % (i, counts[i], pct))
-                    print('%d\t%d\t%.3f' % (i, counts[i], pct))
-
-
-def split_mesh_dump(lines):
-    parts = []
-    while DELIM in lines:
-        i = lines.index(DELIM)
-        if i > 0:
-            parts.append(lines[:i])
-        lines = lines[i+1:]
-    if lines:
-        parts.append(lines)
-    return parts
 
 
 # from rainbow
@@ -141,34 +75,6 @@ def get_rss(pid, stat = 'Pss'):
     return get_stat(stat)
 
 
-def test_perf(detailed_mesh_stats=False, enabled_configs=None):
-    redis_benchmark = tool('redis-benchmark', 'jemalloc')
-
-    for config in configs:
-        if config.skip:
-            continue
-        if enabled_configs and config.name not in enabled_configs:
-            continue
-
-        server = tool('redis-server', config.name)
-        server_cmd = run_cmd('%s redis.conf' % server)
-
-        time.sleep(.1) # sleep for 100 ms to give server time to start
-
-        start = time.time()
-
-        run_cmd(redis_benchmark).join()
-
-        end = time.time()
-
-        duration_secs = end - start
-
-        server_cmd.end()
-        server_cmd.join()
-
-        print('%s\t%.3f' % (config.name, duration_secs))
-
-
 def getpid(name):
     getpid_cmd = run_cmd('ps -u %s' % os.getuid()).join()
     lines = getpid_cmd.stdout.decode('utf8').splitlines()
@@ -199,7 +105,8 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None):
             env = ''
             if config.env:
                 env = '-env ' + config.env
-            cmd = 'mstat -o ruby-frag-%s.%d.tsv %s -freq %d -- %s' % (config.name, time.time(), env, FREQ, cmd)
+            mstat_results_path = '' % (config.name, time.time())
+            cmd = 'mstat -o ruby-frag-%s.%d.tsv %s -freq %d -- %s' % (mstat_results_path, env, FREQ, cmd)
 
         start = time.time()
         run_cmd(cmd).join()
@@ -219,13 +126,17 @@ def main():
     parser.add_argument('-v', action='store_const', const=True, help='verbose logging')
     parser.add_argument('--config', nargs='+', help='specific configs to run')
     parser.add_argument('tests', nargs='*', default=sorted(TESTS.keys()), help='specific tests to run')
+    parser.add_argument('--runs', type=int, default=5, help='Number of runs to do')
     args = parser.parse_args()
 
     if args.v:
         log = make_reporter(DEBUG, False, sys.stderr)
 
     for test in args.tests:
-        TESTS[test](enabled_configs=args.config)
+        for i in range(args.runs):
+            # shuffle configs so that results aren't artifacts of order
+            shuffle(configs)
+            TESTS[test](enabled_configs=args.config)
 
 
 if __name__ == '__main__':
