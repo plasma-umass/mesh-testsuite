@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euxo pipefail
+
+VOLUME='mesh-artifact-data'
+
+RUN_COUNT='1'
+
+RUN_FLAGS="--privileged --rm --mount type=volume,src=$VOLUME,dst=/data"
+
+# docker volume rm $VOLUME || true
+# docker volume create $VOLUME
+
+# TEST='1-redis'
+# docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
+
+TEST='3-ruby'
+# docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
+
+docker run $RUN_FLAGS --mount type=bind,src=$PWD/data,dst=/results bpowers/mesh-artifact-$TEST cp -r /data /results
