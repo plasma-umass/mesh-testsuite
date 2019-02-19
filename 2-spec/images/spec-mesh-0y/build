@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+
+docker build -t bpowers/mesh-artifact-2-spec:mesh0y .
