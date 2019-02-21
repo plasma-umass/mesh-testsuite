@@ -17,10 +17,10 @@ TEST='2-spec'
 # (cd 2-spec/runner && ./test)
 
 TEST='3-ruby'
-# docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
+docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
 
 TEST='0-firefox'
-docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh 1
+# docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT
 
 sudo rm -rf ./results-old
 if [ -d ./results ]; then
