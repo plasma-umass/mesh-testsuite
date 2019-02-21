@@ -32,3 +32,5 @@ env/bin/python atsy/example/comp_analysis.py -c atsy/example/comp_analysis_conf_
 sleep 5
 pkill geckodriver
 pkill firefox
+
+exit 0

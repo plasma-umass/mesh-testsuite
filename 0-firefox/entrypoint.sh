@@ -18,3 +18,5 @@ while [ $i -lt $N ]; do
     ./run_speedometer
     i=$[$i+i]
 done
+
+exit 0
