@@ -1,6 +1,6 @@
 # To build use:
 # docker build -t bpowers/mesh-artifact-2-spec:mesh1y .
-FROM bpowers/mesh:git-be630c4aeeef2103e4b6357550d02c3469a212df as mesh
+FROM bpowers/mesh:git-5408d826cdd59d5bd8778762bb963ec171264066 as mesh
 
 FROM bpowers/mesh-artifact-2-spec:mesh-base
 MAINTAINER Bobby Powers <bpowers@cs.umass.edu>

@@ -1,6 +1,6 @@
 # docker build -t bpowers/mesh-artifact-3-ruby .
 
-FROM bpowers/mesh:git-be630c4aeeef2103e4b6357550d02c3469a212df as mesh
+FROM bpowers/mesh:git-5408d826cdd59d5bd8778762bb963ec171264066 as mesh
 FROM bpowers/mstat:git-497eeeee07e6813ebc4d557d50ebe82bbfc05318 as mstat
 
 
