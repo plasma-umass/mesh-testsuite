@@ -12,3 +12,4 @@ __pycache__
 /test/spec/data
 /coverage
 /results
+/results-old
