@@ -16,7 +16,5 @@ i=0
 while [ $i -lt $N ]; do
     echo "run $i"
     ./run_speedometer
-    i=$[$i+i]
+    i=$(($i+1))
 done
-
-exit 0

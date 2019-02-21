@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -euxo pipefail
 
 MAX_MAP_COUNT="$(sysctl vm.max_map_count | cut -d '=' -f 2)"
 
@@ -10,8 +10,8 @@ if (( $MAX_MAP_COUNT < 100000 )); then
    exit 1
 fi
 
-pkill geckodriver
-pkill firefox
+pkill geckodriver || true
+pkill firefox || true
 
 mkdir -p /data/0-firefox/speed
 
@@ -21,8 +21,8 @@ export MALLOCSTATS=1
 env/bin/python atsy/example/comp_analysis.py -c atsy/example/comp_analysis_conf_speedometer.py --content-processes 0 -b Firefox --per_tab_pause 140 --settle_wait_time 1 | tee -a /data/0-firefox/speed/results.tsv
 
 sleep 5
-pkill geckodriver
-pkill firefox
+pkill geckodriver || true
+pkill firefox || true
 
 unset TEST_LD_PRELOAD
 unset MALLOCSTATS
@@ -30,7 +30,5 @@ export TEST_NAME=jemalloc
 env/bin/python atsy/example/comp_analysis.py -c atsy/example/comp_analysis_conf_speedometer.py --content-processes 0 -b Firefox --per_tab_pause 140 --settle_wait_time 1 | tee -a /data/0-firefox/speed/results.tsv
 
 sleep 5
-pkill geckodriver
-pkill firefox
-
-exit 0
+pkill geckodriver || true
+pkill firefox || true
