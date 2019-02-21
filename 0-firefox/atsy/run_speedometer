@@ -1,0 +1,34 @@
+#!/bin/bash
+set -x
+
+MAX_MAP_COUNT="$(sysctl vm.max_map_count | cut -d '=' -f 2)"
+
+if (( $MAX_MAP_COUNT < 100000 )); then
+   echo "increase max_map_count before test:"
+   echo sudo su -c "'echo 655350 > /proc/sys/vm/max_map_count'"
+   echo sudo cpupower frequency-set -g performance
+   exit 1
+fi
+
+pkill geckodriver
+pkill firefox
+
+mkdir -p /data/0-firefox/speed
+
+export TEST_LD_PRELOAD=libmesh.so
+export TEST_NAME=mesh
+export MALLOCSTATS=1
+env/bin/python atsy/example/comp_analysis.py -c atsy/example/comp_analysis_conf_speedometer.py --content-processes 0 -b Firefox --per_tab_pause 140 --settle_wait_time 1 | tee -a /data/0-firefox/speed/results.tsv
+
+sleep 5
+pkill geckodriver
+pkill firefox
+
+unset TEST_LD_PRELOAD
+unset MALLOCSTATS
+export TEST_NAME=jemalloc
+env/bin/python atsy/example/comp_analysis.py -c atsy/example/comp_analysis_conf_speedometer.py --content-processes 0 -b Firefox --per_tab_pause 140 --settle_wait_time 1 | tee -a /data/0-firefox/speed/results.tsv
+
+sleep 5
+pkill geckodriver
+pkill firefox

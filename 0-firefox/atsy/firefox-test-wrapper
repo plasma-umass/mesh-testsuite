@@ -1,0 +1,20 @@
+#!/bin/bash
+
+DATE=`date +%s.%N`
+SUFFIX=`cat /dev/urandom | tr -cd 'a-f0-9' | head -c 8`
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+
+version=57.0.4
+
+if [ ! -z "$TEST_LD_PRELOAD" ]; then
+    arg="-env LD_PRELOAD=$TEST_LD_PRELOAD"
+    binary=/opt/firefox-${version}-nojemalloc/bin/firefox
+else
+    arg=''
+    binary=/opt/firefox-${version}-jemalloc/bin/firefox
+fi
+
+mkdir -p /data/0-firefox/memory
+
+exec mstat -o "/data/0-firefox/memory/speedometer.$TEST_NAME.$DATE-$SUFFIX.tsv" $arg $binary "$@"

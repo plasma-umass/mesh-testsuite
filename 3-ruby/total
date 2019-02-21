@@ -10,17 +10,17 @@ from os import path
 from collections import defaultdict
 
 
-usage = []
+for f in sys.argv[1:]:
+    usage = []
+    with open(f, newline='') as log_file:
+        reader = csv.DictReader(log_file, dialect=csv.excel_tab)
+        for row in reader:
+            # convert from bytes to MB
+            total = int(row['rss']) + int(row['kernel'])
+            usage.append(int(total)/1024.0/1024.0)
 
-with open(sys.argv[1], newline='') as log_file:
-    reader = csv.DictReader(log_file, dialect=csv.excel_tab)
-    for row in reader:
-        # convert from bytes to MB
-        total = int(row['rss']) + int(row['kernel'])
-        usage.append(int(total)/1024.0/1024.0)
+    usage = numpy.array(usage)
+    mean = numpy.mean(usage)
+    stddev = numpy.std(usage)
 
-usage = numpy.array(usage)
-mean = numpy.mean(usage)
-stddev = numpy.std(usage)
-
-print('%.2f (± %.2f)' % (mean, stddev))
+    print('%s\t%.2f\t(± %.2f)' % (f, mean, stddev))
