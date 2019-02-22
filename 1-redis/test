@@ -134,11 +134,15 @@ def slurp(file_name):
 
 
 def get_rss(pid, stat = 'Pss'):
-    memory = slurp('/proc/%d/smaps_rollup' % pid)
+    memory = slurp('/proc/%d/smaps' % pid)
     lines = memory.splitlines()
     def get_stat(stat_name):
-        line = [l for l in lines if l.startswith(stat + ':')][0]
-        return float(line.split()[1])/1024.0
+        filtered = [l for l in lines if l.startswith(stat + ':')]
+        kb = [float(l.split()[1]) for l in filtered]
+        total = 0
+        for mem in kb:
+            total += kb
+        return total/1024.0
 
     return get_stat(stat)
 
@@ -207,7 +211,14 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
         server = tool('redis-server', config.name)
         cmd = '%s redis.conf' % server
         if USE_MSTAT:
-            mstat_results_path = path.join(data_dir, 'memory', '%s.%d.tsv' % (config.name, time.time()))
+            mstat_log_name = '%s.%d.tsv' % (config.name, time.time())
+            symlink_dst = '%s.tsv' % config.name
+            try:
+                os.remove(symlink_dst)
+            except:
+                pass
+            os.symlink(mstat_log_name, symlink_dst)
+            mstat_results_path = path.join(data_dir, 'memory', mstat_log_name)
             cmd = 'mstat -o %s -freq %d -- %s' % (mstat_results_path, FREQ, cmd)
 
         server_cmd = run_cmd(cmd)
