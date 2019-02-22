@@ -118,7 +118,7 @@ def test_speed(*benchmarks, enabled_configs=None, ref=False, docker=True, mstat=
         flags = '--rm'
         flags += ' --mount type=volume,source=%s,target=/data' % volume
         flags += ' --mount type=bind,source=%s,target=/spec/result' % result_dir
-        cmd = "docker run %s %s /bin/sh -c 'mkdir -p /data/3-redis; cp -r /spec/result /data/3-redis/%s'" % (flags, config.docker_image, config.dir_name)
+        cmd = "docker run %s %s /bin/sh -c 'mkdir -p /data/2-spec; cp -r /spec/result /data/2-spec/%s'" % (flags, config.docker_image, config.dir_name)
         log(WARN, '$ %s' % (cmd,))
         result = run_cmd(cmd).join()
         if result.returncode != 0:
