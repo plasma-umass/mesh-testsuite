@@ -11,20 +11,20 @@ SPEC_FLAGS='--no-ref'
 
 RUN_FLAGS="--privileged --rm --mount type=volume,src=$VOLUME,dst=/data"
 
-docker volume rm "$VOLUME" || true
-docker volume create "$VOLUME" || true
+# docker volume rm "$VOLUME" || true
+# docker volume create "$VOLUME" || true
 
 TEST='1-redis'
-# docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST:jan ./test --runs $RUN_COUNT --data-dir=/data/$TEST
+docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST:jan ./test --runs $RUN_COUNT --data-dir=/data/$TEST
 
 TEST='2-spec'
-(cd 2-spec/runner && ./test $SPEC_FLAGS --volume=$VOLUME)
+# (cd 2-spec/runner && ./test $SPEC_FLAGS --volume=$VOLUME)
 
 TEST='3-ruby'
-# docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
+docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
 
 TEST='0-firefox'
-# docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT
+docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT
 
 sudo rm -rf ./results-old
 if [ -d ./results ]; then
