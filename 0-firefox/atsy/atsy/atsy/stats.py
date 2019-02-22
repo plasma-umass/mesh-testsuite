@@ -86,7 +86,7 @@ class ProcessStats:
                 # print "[%d] - %s\n  * RSS - %d\n    USS - %d" % (p.pid, exe, rss, uss)
                 parent_rss += rss
             else:
-                print "[%d] - %s\n    RSS - %d\n  * USS - %d" % (p.pid, exe, rss, uss)
+                # print "[%d] - %s\n    RSS - %d\n  * USS - %d" % (p.pid, exe, rss, uss)
                 children_uss += uss
 
         if not parent_rss:
