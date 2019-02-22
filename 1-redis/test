@@ -207,7 +207,7 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
         server = tool('redis-server', config.name)
         cmd = '%s redis.conf' % server
         if USE_MSTAT:
-            mstat_results_path = path.join(data_dir, 'memory', 'ruby-frag-%s.%d.tsv' % (config.name, time.time()))
+            mstat_results_path = path.join(data_dir, 'memory', '%s.%d.tsv' % (config.name, time.time()))
             cmd = 'mstat -o %s -freq %d -- %s' % (mstat_results_path, FREQ, cmd)
 
         server_cmd = run_cmd(cmd)
@@ -282,7 +282,7 @@ def test_fragperf(detailed_mesh_stats=False, enabled_configs=None, latency_stats
     except:
         pass
 
-    with open(path.join(data_dir, 'speed', 'redis-perf.%s.tsv' % (time.time(),)), 'w') as results:
+    with open(path.join(data_dir, 'speed', 'fragperf.%s.tsv' % (time.time(),)), 'w') as results:
         results.write('config\tseconds\n')
         for config in configs:
             if config.skip:
