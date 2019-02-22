@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+
+from os import path
+from sys import stderr, argv
+from subprocess import Popen, PIPE
+from shutil import copyfile, copymode
+
+from config import configs
+from cmd import run_cmd
+
+
+def main():
+    '''
+    Build each config, placing the build artifacts in ./bin
+    '''
+    os.makedirs('./bin', exist_ok=True)
+    root_dir = os.getcwd()
+
+    run_cmd('git submodule update --init').join()
+
+    for config in configs:
+        print('building %s' % config.name)
+
+        os.chdir(path.join(root_dir, 'redis', 'src'))
+
+        # remove config from older builds
+        try:
+            os.remove('.make-settings')
+        except OSError:
+            pass
+
+        if config.ldflags:
+            ldflags = "LDFLAGS='%s'" % config.ldflags
+        else:
+            ldflags = ''
+
+        make_cmd = "make %s %s" % (config.use_flags, ldflags)
+        cmd = run_cmd(make_cmd + ' clean', effect=None).join()
+        if cmd.returncode != 0:
+            print('make failed')
+            return
+
+        make_cmd = run_cmd(make_cmd + ' -j4', effect=None).join()
+        if make_cmd.returncode != 0:
+            print('make failed')
+            return
+
+        # copy redis-server, redis-cli, redis-benchmark to /bin w/ suffix
+        for f in ['redis-server', 'redis-cli', 'redis-benchmark']:
+            dst = path.join(root_dir, 'bin', '%s-%s' % (f, config.name))
+            copyfile(f, dst)
+            copymode(f, dst)
+    
+
+if __name__ == '__main__':
+    sys.exit(main())
