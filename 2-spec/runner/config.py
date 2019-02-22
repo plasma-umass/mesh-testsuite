@@ -12,8 +12,8 @@ class Config:
 configs = [
     Config('jemalloc', 'bpowers/mesh-artifact-2-spec:jemalloc'),
     Config('glibc', 'bpowers/mesh-artifact-2-spec:glibc'),
-    Config('mesh', 'bpowers/mesh-artifact-2-spec:mesh0n', 'mesh-0n'),
-    Config('mesh', 'bpowers/mesh-artifact-2-spec:mesh0y', 'mesh-0y'),
-    Config('mesh', 'bpowers/mesh-artifact-2-spec:mesh1y', 'mesh-1y'),
-    Config('mesh', 'bpowers/mesh-artifact-2-spec:mesh2y', 'mesh-2y'),
+    Config('mesh', 'bpowers/mesh-artifact-2-spec:mesh0n', 'mesh0n'),
+    Config('mesh', 'bpowers/mesh-artifact-2-spec:mesh0y', 'mesh0y'),
+    Config('mesh', 'bpowers/mesh-artifact-2-spec:mesh1y', 'mesh1y'),
+    Config('mesh', 'bpowers/mesh-artifact-2-spec:mesh2y', 'mesh2y'),
 ]

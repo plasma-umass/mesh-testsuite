@@ -75,7 +75,7 @@ def new_result_dir(name, ref):
     return dirname
 
 
-def test_speed(*benchmarks, enabled_configs=None, ref=False, docker=True, mstat=True):
+def test_speed(*benchmarks, enabled_configs=None, ref=False, docker=True, mstat=True, volume=''):
     '''
     Run SPEC, collecting results
     '''
@@ -93,7 +93,7 @@ def test_speed(*benchmarks, enabled_configs=None, ref=False, docker=True, mstat=
 
         flags = '--tune=base'
         if not ref:
-            flags += ' --size=test --noreportable --iterations=1'
+            flags += ' --size=test --noreportable --iterations=2'
 
         runspec_cmd = 'runspec --config=%s %s %s' % (spec_config, flags, benchmark_list)
         cmd = 'cd /spec && . ./shrc && %s' % runspec_cmd
@@ -107,6 +107,18 @@ def test_speed(*benchmarks, enabled_configs=None, ref=False, docker=True, mstat=
             flags += '--rm -it --mount type=bind,source=%s,target=/spec/result' % result_dir
             cmd = "docker run %s %s /bin/sh -c '%s'" % (flags, config.docker_image, cmd)
 
+        log(WARN, '$ %s' % (cmd,))
+        result = run_cmd(cmd).join()
+        if result.returncode != 0:
+            log(ERROR, '%s', result.stdout.decode('utf8'))
+            log(ERROR, '~~~~~')
+            log(ERROR, '%s', result.stderr.decode('utf8'))
+            return
+
+        flags = '--rm'
+        flags += ' --mount type=volume,source=%s,target=/data' % volume
+        flags += ' --mount type=bind,source=%s,target=/spec/result' % result_dir
+        cmd = "docker run %s %s /bin/sh -c 'mkdir -p /data/3-redis; cp -r /spec/result /data/3-redis/%s'" % (flags, config.docker_image, config.dir_name)
         log(WARN, '$ %s' % (cmd,))
         result = run_cmd(cmd).join()
         if result.returncode != 0:
@@ -131,6 +143,7 @@ def main():
     parser.add_argument('--no-docker', action='store_const', const=True, help='Do not use docker')
     parser.add_argument('--config', nargs='+', help='specific configs to run')
     parser.add_argument('--test', nargs='+', help='specific tests to run')
+    parser.add_argument('--volume', type=str, default='mesh-artifact-data', help='docker images to copy results to')
     parser.add_argument('benchmark', nargs='*', default=['int'], help='specific benchmarks to run')
     args = parser.parse_args()
 
@@ -141,8 +154,13 @@ def main():
         args.test = TESTS.keys()
 
     for test in args.test:
-        TESTS[test](*args.benchmark, enabled_configs=args.config,
-                    ref=not args.no_ref, docker=not args.no_docker, mstat=not args.no_mstat)
+        TESTS[test](
+            *args.benchmark,
+            enabled_configs=args.config,
+            ref=not args.no_ref,
+            docker=not args.no_docker,
+            mstat=not args.no_mstat,
+            volume=args.volume)
 
 
 if __name__ == '__main__':
