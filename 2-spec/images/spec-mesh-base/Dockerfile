@@ -1,7 +1,7 @@
 # To build use:
 # docker build -t bpowers/mesh-artifact-2-spec:mesh-base .
 
-FROM bpowers/mesh:git-be630c4aeeef2103e4b6357550d02c3469a212df as mesh
+FROM bpowers/mesh:git-b32b9029e84ced9e15d8271d85dfb8648f26a5b7 as mesh
 FROM bpowers/mstat:git-497eeeee07e6813ebc4d557d50ebe82bbfc05318 as mstat
 FROM bpowers/mstatgcc:git-5e94c47aba5edabc23e741e394a3b568881a3370 as mstatgcc
 
