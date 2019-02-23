@@ -19,7 +19,7 @@ RUN_FLAGS="--privileged --rm -t --mount type=volume,src=$VOLUME,dst=/data"
 # docker volume create "$VOLUME" || true
 
 TEST='0-firefox'
-docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT $FF_WAIT_SECS
+# docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT $FF_WAIT_SECS
 
 TEST='1-redis'
 # docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
@@ -50,6 +50,7 @@ $ANALYSIS_RUN sh -c 'cp -r /data/* /results/'
 # docker sucks sometimes
 sudo chown -R $USER results
 
+./analysis/0-firefox.py
 ./analysis/1-redis.py
 ./analysis/2-spec.py
 ./analysis/3-ruby.py
