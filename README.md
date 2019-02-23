@@ -82,6 +82,7 @@ cases.
 
 > Tested with Firefox + Redis and found no significant differences when randomization was disabled
 
+
 ##### Ruby example
 
 > meshing disabled: similar runtime + heap size to jemalloc

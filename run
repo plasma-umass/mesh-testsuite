@@ -35,5 +35,9 @@ mkdir -p ./results
 ANALYSIS_RUN="docker run $RUN_FLAGS --mount type=bind,src=$PWD/results,dst=/results --mount type=bind,src=$PWD/analysis,dst=/analysis,readonly bpowers/mesh-artifact-support "
 
 $ANALYSIS_RUN sh -c 'cp -r /data/* /results/'
+
+# docker sucks sometimes
+sudo chown -R $USER results
+
 $ANALYSIS_RUN sh -c 'SOURCE_DATE_EPOCH=0 R --vanilla <analysis/figure-7-redis.r'
 
