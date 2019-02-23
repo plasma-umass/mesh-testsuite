@@ -24,10 +24,10 @@ $ ./getting-started
 To run through all of the tests with a reduced number of iterations
 and, in the case of SPEC, a smaller dataset.
 
-This script will take around half an hour (or maybe an hour) depending
-on processor speed.  Please disable sleep and ensure you are plugged
-into power before running, and if possible don't use the computer
-while the test is running (try getting a coffee!).
+This script will take 45 minutes to an hour depending on processor
+speed.  Please disable sleep and ensure you are plugged into power
+before running, and if possible don't use the computer while the test
+is running (try getting a coffee!).
 
 
 ### Mesh Configurations
