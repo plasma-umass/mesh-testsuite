@@ -3,7 +3,7 @@ set -euo pipefail
 # set -x
 
 sudo su -c 'echo 655350 > /proc/sys/vm/max_map_count'
-sudo cpupower frequency-set -g performance
+sudo cpupower frequency-set -g performance 2>/dev/null || true
 
 # so firefox is authorized to talk to X from within the containter
 xhost local:root
