@@ -4,15 +4,22 @@ set -euxo pipefail
 sudo su -c 'echo 655350 > /proc/sys/vm/max_map_count'
 sudo cpupower frequency-set -g performance
 
+# so firefox is authorized to talk to X from within the containter
+xhost local:root
+
 VOLUME="mesh-artifact-data"
 
-RUN_COUNT='5'
+RUN_COUNT='1'
 SPEC_FLAGS='--no-ref'
+FF_WAIT_SECS='141'
 
 RUN_FLAGS="--privileged --rm -t --mount type=volume,src=$VOLUME,dst=/data"
 
 # docker volume rm "$VOLUME" || true
 # docker volume create "$VOLUME" || true
+
+TEST='0-firefox'
+docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT $FF_WAIT_SECS
 
 TEST='1-redis'
 # docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
@@ -22,10 +29,6 @@ TEST='2-spec'
 
 TEST='3-ruby'
 # docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
-
-TEST='0-firefox'
-# docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT
-
 
 
 sudo rm -rf ./results-old

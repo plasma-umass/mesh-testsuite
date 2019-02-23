@@ -1,10 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
-N=3
-if [ "$#" -gt 0 ]; then
-    N=$1
+if [ "$#" -ne 2 ]; then
+    echo "usage: ./entrypoint.sh N_RUNS WAIT_TIME" >&2
+    exit 1
 fi
+
+N=$1
+export TEST_WAIT_SECS=$2
 echo "doing $N runs"
 
 
