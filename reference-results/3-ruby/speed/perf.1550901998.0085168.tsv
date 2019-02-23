@@ -1,0 +1,9 @@
+config	seconds
+mesh1n	2.595
+libc	2.642
+mesh0y	2.700
+mesh2y	2.787
+mesh1y	2.776
+jemalloc	2.627
+mesh2n	2.590
+mesh0n	2.608
