@@ -133,20 +133,6 @@ def slurp(file_name):
         return f.read().strip()
 
 
-def get_rss(pid, stat = 'Pss'):
-    memory = slurp('/proc/%d/smaps' % pid)
-    lines = memory.splitlines()
-    def get_stat(stat_name):
-        filtered = [l for l in lines if l.startswith(stat + ':')]
-        kb = [float(l.split()[1]) for l in filtered]
-        total = 0
-        for mem in kb:
-            total += kb
-        return total/1024.0
-
-    return get_stat(stat)
-
-
 def test_perf(detailed_mesh_stats=False, enabled_configs=None, latency_stats=False, data_dir='.'):
     redis_benchmark = tool('redis-benchmark', 'jemalloc')
 
@@ -193,6 +179,8 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
     redis-server, recording memory usage.
     '''
 
+    print('running frag test')
+
     try:
         os.mkdir(data_dir)
     except:
@@ -207,6 +195,8 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
             continue
         if enabled_configs and config.name not in enabled_configs:
             continue
+
+        print('%s' % config.name)
 
         server = tool('redis-server', config.name)
         cmd = '%s redis.conf' % server
@@ -232,8 +222,6 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
         time.sleep(.5)
         run_cmd('%s dbsize' % REDIS_CLI).join()
 
-        rss = get_rss(server_pid)
-
         if 'mesh' in config.name and detailed_mesh_stats:
             run_cmd('kill -42 %d' % server_pid).join()
 
@@ -242,7 +230,6 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
             time.sleep(5) # give time to reach steady state
             run_cmd('%s config set activedefrag no' % REDIS_CLI).join()
             time.sleep(1)
-            end_rss = get_rss(server_pid)
         else:
             run_cmd('%s info' % REDIS_CLI).join()
             time.sleep(5) # give time to reach steady state
@@ -260,9 +247,6 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
         else:
             log(DEBUG, 'aint nobody got time for sleeping')
 
-        _rss = get_rss(server_pid, stat='Rss')
-        _pss = get_rss(server_pid, stat='Pss')
-
         run_cmd('kill %d' % server_pid).join()
         time.sleep(.3) # give mstat a chance to finish up
         server_cmd.end()
@@ -275,14 +259,13 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
             print_distribution(parts[0])
             print_distribution(parts[1])
 
-        print('%s\t%.3f' % (config.name, _pss))
-
 
 def test_fragperf(detailed_mesh_stats=False, enabled_configs=None, latency_stats=False, data_dir='.'):
     '''
     Given a file containing commands, run them against each
     redis-server, recording memory usage.
     '''
+    print('running fragperf test')
 
     try:
         os.mkdir(data_dir)
