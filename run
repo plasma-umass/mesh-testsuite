@@ -11,6 +11,9 @@ VOLUME="mesh-artifact-data"
 
 RUN_COUNT='2'
 SPEC_FLAGS='--no-ref'
+
+
+
 FF_WAIT_SECS="$(head -n 1 firefox-wait-seconds)"
 
 RUN_FLAGS="--privileged --rm -t --mount type=volume,src=$VOLUME,dst=/data"
