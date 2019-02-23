@@ -113,6 +113,11 @@ from the command line by invoking `soffice`:
 $ soffice results/0-firefox/memory.absolute.tsv
 ```
 
+Additionally, figures are generated as part of the build process at
+`results/0-firefox/figure-6-firefox.pdf`,
+`results/1-redis/figure-7-redis.pdf`, and
+`results/3-ruby/figure-8-ruby.pdf`.
+
 #### 0. Firefox
 
 > Reduces the memory consumption of Firefox by 16% compared to Firefox’s bundled jemalloc allocator.
