@@ -9,6 +9,10 @@ user named 'mesh' with the password 'mesh', and should be able to
 `sudo` without needing to enter the password.  The VM is recommended
 to be run with 4 GB of RAM and 2 processors allocated to it.
 
+The artifact was prepared + tested with [VirtualBox
+5.2.24](https://www.virtualbox.org/wiki/Download_Old_Builds_5_2) -
+newer versions may work but ¯\_(ツ)_/¯.
+
 Upon launching the VM, you should be treated to a stock Ubuntu 18.10
 Linux Desktop with an open terminal.  Run:
 
