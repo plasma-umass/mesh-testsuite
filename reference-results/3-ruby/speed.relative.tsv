@@ -1,0 +1,9 @@
+allocator	time_seconds
+mesh1n	0.991
+libc	1.000
+mesh0y	1.026
+mesh2y	1.061
+mesh1y	1.057
+jemalloc	1.000
+mesh2n	0.988
+mesh0n	0.988
