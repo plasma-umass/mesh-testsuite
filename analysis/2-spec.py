@@ -18,9 +18,7 @@ ALLOCATORS = [
     'mesh2y',
 ]
 
-ROOT_DIR = path.dirname(path.realpath(__file__))
-
-DATA_DIR = path.join(ROOT_DIR, 'results/2-spec')
+DATA_DIR = path.join('results/2-spec')
 
 DATASET_PREFIX = ''
 
@@ -93,7 +91,7 @@ def mem_stats(allocator, benchmark):
     }
 
 def build_table(output_file):
-    dirs = sorted([d for d in os.listdir(DATA_DIR) if d.startswith(DATASET_PREFIX)])
+    dirs = sorted([d for d in os.listdir(DATA_DIR) if d.startswith(DATASET_PREFIX) and os.path.isdir(path.join(DATA_DIR, d))])
     log(DEBUG, 'dirs: %s', dirs)
 
     runs = {}
@@ -260,7 +258,7 @@ def main():
 
     parser = argparse.ArgumentParser(description='Build a table we can easily use in R from raw SPEC data.')
     parser.add_argument('-v', action='store_const', const=True, help='print commit messages too')
-    parser.add_argument('output', nargs='?', type=str, default='spec-results.tsv', help='output file')
+    parser.add_argument('output', nargs='?', type=str, default='results/2-spec/results.tsv', help='output file')
     args = parser.parse_args()
 
     if args.v:
