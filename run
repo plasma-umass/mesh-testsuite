@@ -26,6 +26,8 @@ TEST='3-ruby'
 TEST='0-firefox'
 # docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT
 
+
+
 sudo rm -rf ./results-old
 if [ -d ./results ]; then
     mv ./results ./results-old
@@ -33,6 +35,11 @@ fi
 mkdir -p ./results
 
 ANALYSIS_RUN="docker run $RUN_FLAGS --mount type=bind,src=$PWD/results,dst=/results --mount type=bind,src=$PWD/analysis,dst=/analysis,readonly bpowers/mesh-artifact-support "
+
+
+# $ANALYSIS_RUN sh -c 'rm -rf /data/2-spec; cp -r /results/2-spec /data/'
+# exit
+
 
 $ANALYSIS_RUN sh -c 'cp -r /data/* /results/'
 
