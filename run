@@ -1,5 +1,6 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
+# set -x
 
 sudo su -c 'echo 655350 > /proc/sys/vm/max_map_count'
 sudo cpupower frequency-set -g performance
@@ -9,29 +10,47 @@ xhost local:root
 
 VOLUME="mesh-artifact-data"
 
-RUN_COUNT='2'
-SPEC_FLAGS='--no-ref'
+# default is for reproducible runs
+RUN_COUNT='5'
+SPEC_FLAGS=''
 
+
+while (( "$#" )); do
+    if [[ '--getting-started' == "$1" ]]; then
+	echo "Getting Started -- fewer runs, non-ref dataset for SPEC"
+	RUN_COUNT='2'
+	SPEC_FLAGS='--no-ref'
+    else
+	echo "unknown argument $1"
+	exit 1
+    fi
+
+    shift
+done
 
 
 FF_WAIT_SECS="$(head -n 1 firefox-wait-seconds)"
 
 RUN_FLAGS="--privileged --rm -t --mount type=volume,src=$VOLUME,dst=/data"
 
-# docker volume rm "$VOLUME" || true
-# docker volume create "$VOLUME" || true
+docker volume rm "$VOLUME" || true
+docker volume create "$VOLUME" || true
 
 TEST='0-firefox'
-# docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT $FF_WAIT_SECS
+echo "running $TEST ($RUN_COUNT)"
+docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT $FF_WAIT_SECS
 
 TEST='1-redis'
-# docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
+echo "running $TEST"
+docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
 
 TEST='2-spec'
-# (cd 2-spec/runner && ./test $SPEC_FLAGS --volume=$VOLUME)
+echo "running $TEST"
+(cd 2-spec/runner && ./test $SPEC_FLAGS --volume=$VOLUME)
 
 TEST='3-ruby'
-# docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
+echo "running $TEST"
+docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
 
 
 sudo rm -rf ./results-old
