@@ -9,6 +9,21 @@ user named 'mesh' with the password 'mesh', and should be able to
 `sudo` without needing to enter the password.  The VM is recommended
 to be run with 4 GB of RAM and 2 processors allocated to it.
 
+Upon launching the VM, you should be treated to a stock Ubuntu 18.10
+Linux Desktop with an open terminal.  Run:
+
+```sh
+$ ./getting-started
+```
+
+To run through all of the tests with a reduced number of iterations
+and, in the case of SPEC, a smaller dataset.
+
+This script will take around half an hour (or maybe an hour) depending
+on processor speed.  Please disable sleep and ensure you are plugged
+into power before running, and if possible don't use the computer
+while the test is running (try getting a coffee!).
+
 
 Step-by-Step Instructions
 -------------------------
@@ -46,6 +61,13 @@ automate re-collection of this data into this artifact in the time
 alloted.
 
 ### Common Problems
+
+#### Firefox times out
+
+Virtual machines are slow, and Firefox may not complete the
+Speedometer test before the test suite grows impatient and moves on.
+If this happens, edit `./firefox-wait-seconds` to be a larger integer
+number of seconds and re-run `./run` or `./getting-started`.
 
 When running the Redis tests under Docker on macOS, we have seen Mesh
 take an order of magnitude longer under the `fragperf` test.  We
