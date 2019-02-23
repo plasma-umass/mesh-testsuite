@@ -149,7 +149,7 @@ overall numbers are the last 5 rows.
 
 > Tested with Firefox + Redis and found no significant differences when randomization was disabled
 
-Compare the `0n` and `2y` mesh configurations
+Compare the `0y` and `2y` mesh configurations in Redis.  We did not have time to add the `0y` configuration to our Firefox harness for the artifact.
 
 ##### Ruby example
 
