@@ -63,6 +63,8 @@ cases.
 
 > Mesh requires 530 MB (σ = 22.4 MB) to complete the benchmark, while the Mozilla allocator needs 632 MB (σ = 25.3 MB).
 
+This artifact reproduces these results, which can be verified via the data in the generated files `results/0-firefox/memory.relative.tsv` and `results/0-firefox/speed.relative.tsv`.
+
 
 #### 1. Redis
 
@@ -70,12 +72,16 @@ cases.
 
 > With Mesh, insertion takes 1.76s, while with Redis’s default of jemalloc, insertion takes 1.72s.
 
+These results can be verified in the data in the generated files `results/1-redis/memory.relative.tsv` and `results/1-redis/speed.relative.tsv`.
+
 
 #### 2. SPEC
 
 > Mesh modestly decreases average memory consumption (geomean: −2.4%) vs. glibc, while imposing minimal execution time overhead (geomean: 0.7%).
 
 > Perlbench.400: glibc peak RSS is 664MB, Mesh reduces its peak RSS to 564MB (a 15% reduction) while increasing its runtime overhead by only 3.9%.
+
+These results can be verified in the data in the generated files `results/2-spec/results.tsv`.
 
 
 #### 3. Empirical value of randomization
@@ -90,3 +96,5 @@ cases.
 > meshing enabled but randomization disabled: 4% runtime overhead, 3% reduction in heap size
 
 > randomization on has time overhead of 10.7% compared to jemalloc, 19% heap size reduction
+
+These results can be verified in the data in the generated files `results/3-ruby/memory.relative.tsv` and  `results/3-ruby/speed.relative.tsv`
