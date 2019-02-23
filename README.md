@@ -67,6 +67,10 @@ into tables that make evaluating our claims as straightforward as
 possible.
 
 
+SPEC takes a long time, budget around 24 hours for all 6 of our tested
+configurations to run.
+
+
 ### Claims not supported by the artifact
 
 At the end of Section 6.2.2 (Evaluation: Redis), we claim:
