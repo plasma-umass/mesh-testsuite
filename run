@@ -50,11 +50,18 @@ $ANALYSIS_RUN sh -c 'cp -r /data/* /results/'
 # docker sucks sometimes
 sudo chown -R $USER results
 
-./analysis/0-firefox.py
-./analysis/1-redis.py
-./analysis/2-spec.py
-./analysis/3-ruby.py
+# delete results for short-lived subprocesses firefox spawns
+find results/0-firefox/memory -name '*.tsv' -size -10k -delete
 
+# ./analysis/0-firefox.py
+# ./analysis/1-redis.py
+# ./analysis/2-spec.py
+# ./analysis/3-ruby.py
+
+(cd results/0-firefox/memory; rm -f jemalloc.tsv; ln -s $(ls -t speedometer.jemalloc*.tsv | head -n 1) jemalloc.tsv)
+(cd results/0-firefox/memory; rm -f mesh.tsv; ln -s $(ls -t speedometer.mesh*.tsv | head -n 1) mesh.tsv)
+
+$ANALYSIS_RUN sh -c 'SOURCE_DATE_EPOCH=0 R --vanilla <analysis/figure-6-firefox.r'
 $ANALYSIS_RUN sh -c 'SOURCE_DATE_EPOCH=0 R --vanilla <analysis/figure-7-redis.r'
 $ANALYSIS_RUN sh -c 'SOURCE_DATE_EPOCH=0 R --vanilla <analysis/figure-8-ruby.r'
 

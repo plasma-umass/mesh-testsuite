@@ -26,8 +26,6 @@ TEST_END = float(slurp('firefox-wait-seconds').strip()) # seconds
 def collect_memory():
     allocators = defaultdict(list)
 
-    # for every file in results/3-ruby/memory (that isn't symlink)
-    # find heap size at 7.5 seconds
     for filename in os.listdir(MEMORY_DIR):
         filepath = path.join(MEMORY_DIR, filename)
         if path.islink(filepath):
