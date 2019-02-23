@@ -92,6 +92,7 @@ def test_frag(data_dir='.', detailed_mesh_stats=False, enabled_configs=None):
     Given a file containing commands, run them against each
     redis-server, recording memory usage.
     '''
+    print('running frag test')
 
     try:
         os.mkdir(data_dir)
@@ -114,7 +115,14 @@ def test_frag(data_dir='.', detailed_mesh_stats=False, enabled_configs=None):
             env = ''
             if config.env:
                 env = '-env ' + config.env
-            mstat_results_path = path.join(data_dir, 'memory', 'ruby-frag-%s.%d.tsv' % (config.name, time.time()))
+            mstat_log_name = '%s.%d.tsv' % (config.name, time.time())
+            symlink_dst = path.join(data_dir, 'memory', '%s.tsv' % config.name)
+            try:
+                os.remove(symlink_dst)
+            except:
+                pass
+            os.symlink(mstat_log_name, symlink_dst)
+            mstat_results_path = path.join(data_dir, 'memory', mstat_log_name)
             cmd = 'mstat -o %s %s -freq %d -- %s' % (mstat_results_path, env, FREQ, cmd)
 
         start = time.time()
@@ -132,6 +140,7 @@ def test_perf(data_dir='.', detailed_mesh_stats=False, enabled_configs=None):
     Given a file containing commands, run them against each
     redis-server, recording memory usage.
     '''
+    print('running perf test')
 
     try:
         os.mkdir(data_dir)
@@ -142,7 +151,7 @@ def test_perf(data_dir='.', detailed_mesh_stats=False, enabled_configs=None):
     except:
         pass
 
-    with open(path.join(data_dir, 'speed', 'ruby-perf.%s.tsv' % (time.time(),)), 'w') as results:
+    with open(path.join(data_dir, 'speed', 'perf.%s.tsv' % (time.time(),)), 'w') as results:
         results.write('config\tseconds\n')
         for config in configs:
             if config.skip:

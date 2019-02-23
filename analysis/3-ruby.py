@@ -10,7 +10,7 @@ from os import path
 from collections import defaultdict
 
 
-BASE_DIR = 'results/1-redis'
+BASE_DIR = 'results/3-ruby'
 MEMORY_DIR = path.join(BASE_DIR, 'memory')
 SPEED_DIR = path.join(BASE_DIR, 'speed')
 
@@ -25,29 +25,28 @@ def slurp(file_name):
 def collect_memory():
     allocators = defaultdict(list)
 
-    # for every file in results/1-redis/memory (that isn't symlink)
+    # for every file in results/3-ruby/memory (that isn't symlink)
     # find heap size at 7.5 seconds
     for filename in os.listdir(MEMORY_DIR):
         filepath = path.join(MEMORY_DIR, filename)
         if path.islink(filepath):
             continue
 
-        heap_at_test_end_mb = None
+        heap_usage_mb = []
         with open(filepath) as log_file:
             reader = csv.DictReader(log_file, dialect=csv.excel_tab)
             for row in reader:
                 time_ns = int(row['time'])
                 time_s = time_ns / 1e9
-                if time_s >= TEST_END:
-                    heap = int(row['rss']) + int(row['kernel'])
-                    heap_mb = heap/1024.0/1024.0
-                    heap_at_test_end_mb = heap_mb
-                    break
+                heap = int(row['rss']) + int(row['kernel'])
+                heap_mb = heap/1024.0/1024.0
+                heap_usage_mb.append(heap_mb)
 
-        assert heap_at_test_end_mb is not None
+        usage = numpy.array(heap_usage_mb)
+        average = numpy.mean(usage)
 
         allocator = filename.split('.')[0]
-        allocators[allocator].append(heap_at_test_end_mb)
+        allocators[allocator].append(average)
 
     base_mean = None
     with open(path.join(BASE_DIR, 'memory.absolute.tsv'), 'w') as results:
@@ -58,7 +57,7 @@ def collect_memory():
             median = numpy.median(usage)
             stddev = numpy.std(usage)
 
-            if allocator == 'mesh0n':
+            if allocator == 'jemalloc':
                 base_mean = mean
 
             results.write('%s\t%.1f\t%.1f\t%.1f\n' % (allocator, mean, median, stddev))
@@ -76,7 +75,7 @@ def collect_memory():
 def collect_speed():
     allocators = defaultdict(list)
 
-    # for every file in results/1-redis/speed
+    # for every file in results/3-ruby/speed
     # collect allocator stats
     for filename in os.listdir(SPEED_DIR):
         filepath = path.join(SPEED_DIR, filename)
