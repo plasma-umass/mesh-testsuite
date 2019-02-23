@@ -52,4 +52,5 @@ sudo chown -R $USER results
 ./analysis/3-ruby.py
 
 $ANALYSIS_RUN sh -c 'SOURCE_DATE_EPOCH=0 R --vanilla <analysis/figure-7-redis.r'
+$ANALYSIS_RUN sh -c 'SOURCE_DATE_EPOCH=0 R --vanilla <analysis/figure-8-ruby.r'
 
