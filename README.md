@@ -78,15 +78,14 @@ cases.
 > Perlbench.400: glibc peak RSS is 664MB, Mesh reduces its peak RSS to 564MB (a 15% reduction) while increasing its runtime overhead by only 3.9%.
 
 
-#### 3. Ruby
+#### 3. Empirical value of randomization
+
+> Tested with Firefox + Redis and found no significant differences when randomization was disabled
+
+##### Ruby example
 
 > meshing disabled: similar runtime + heap size to jemalloc
 
 > meshing enabled but randomization disabled: 4% runtime overhead, 3% reduction in heap size
 
 > randomization on has time overhead of 10.7% compared to jemalloc, 19% heap size reduction
-
-
-### 4. Empirical value of randomization
-
-> Tested with Firefox + Redis and found no significant differences when randomization was disabled
