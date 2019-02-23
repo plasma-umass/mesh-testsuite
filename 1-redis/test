@@ -202,7 +202,7 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
         cmd = '%s redis.conf' % server
         if USE_MSTAT:
             mstat_log_name = '%s.%d.tsv' % (config.name, time.time())
-            symlink_dst = '%s.tsv' % config.name
+            symlink_dst = path.join(data_dir, 'memory', '%s.tsv' % config.name)
             try:
                 os.remove(symlink_dst)
             except:
