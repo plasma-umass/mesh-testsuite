@@ -1,0 +1,277 @@
+##############################################################################
+#   INVALID RUN -- INVALID RUN -- INVALID RUN -- INVALID RUN -- INVALID RUN  #
+#                                                                            #
+# Your run was marked invalid because it has one or more flags in the        #
+# "unknown" category. You might be able to resolve this problem without      #
+# re-running your test; see                                                  #
+#      http://www.spec.org/cpu2006/Docs/runspec.html#flagsurl                #
+# for more information.                                                      #
+#                                                                            #
+#   INVALID RUN -- INVALID RUN -- INVALID RUN -- INVALID RUN -- INVALID RUN  #
+##############################################################################
+                           SPEC(R) CINT2006 Summary
+                          Intel Intel Core i7-4558U
+                             Test Sponsor: PLASMA
+                           Tue Feb 19 20:46:01 2019
+
+CPU2006 License: 0                                       Test date: Feb-2019
+Test sponsor: PLASMA                         Hardware availability: Oct-2017
+Tested by:    Bobby Powers                   Software availability: Oct-2017
+
+                                  Estimated                       Estimated
+                Base     Base       Base        Peak     Peak       Peak
+Benchmarks      Ref.   Run Time     Ratio       Ref.   Run Time     Ratio
+-------------- ------  ---------  ---------    ------  ---------  ---------
+400.perlbench    9770        214       45.7 S                                  
+400.perlbench    9770        215       45.5 S                                  
+400.perlbench    9770        214       45.6 *                                  
+401.bzip2        9650        324       29.8 S                                  
+401.bzip2        9650        324       29.8 *                                  
+401.bzip2        9650        323       29.8 S                                  
+403.gcc          8050        194       41.5 S                                  
+403.gcc          8050        195       41.2 S                                  
+403.gcc          8050        195       41.2 *                                  
+429.mcf          9120        200       45.7 *                                  
+429.mcf          9120        201       45.5 S                                  
+429.mcf          9120        197       46.2 S                                  
+445.gobmk       10490        350       30.0 S                                  
+445.gobmk       10490        351       29.9 S                                  
+445.gobmk       10490        351       29.9 *                                  
+456.hmmer        9330        281       33.3 S                                  
+456.hmmer        9330        281       33.2 *                                  
+456.hmmer        9330        281       33.2 S                                  
+458.sjeng       12100        384       31.5 S                                  
+458.sjeng       12100        384       31.5 *                                  
+458.sjeng       12100        385       31.5 S                                  
+462.libquantum  20720        251       82.6 S                                  
+462.libquantum  20720        249       83.2 *                                  
+462.libquantum  20720        249       83.3 S                                  
+464.h264ref     22130        350       63.2 *                                  
+464.h264ref     22130        349       63.5 S                                  
+464.h264ref     22130        353       62.6 S                                  
+471.omnetpp      6250        277       22.6 S                                  
+471.omnetpp      6250        275       22.7 S                                  
+471.omnetpp      6250        276       22.7 *                                  
+473.astar        7020        278       25.2 *                                  
+473.astar        7020        280       25.1 S                                  
+473.astar        7020        278       25.3 S                                  
+483.xalancbmk    6900        133       52.0 S                                  
+483.xalancbmk    6900        133       52.0 *                                  
+483.xalancbmk    6900        133       51.9 S                                  
+==============================================================================
+400.perlbench    9770        214       45.6 *                                  
+401.bzip2        9650        324       29.8 *                                  
+403.gcc          8050        195       41.2 *                                  
+429.mcf          9120        200       45.7 *                                  
+445.gobmk       10490        351       29.9 *                                  
+456.hmmer        9330        281       33.2 *                                  
+458.sjeng       12100        384       31.5 *                                  
+462.libquantum  20720        249       83.2 *                                  
+464.h264ref     22130        350       63.2 *                                  
+471.omnetpp      6250        276       22.7 *                                  
+473.astar        7020        278       25.2 *                                  
+483.xalancbmk    6900        133       52.0 *                                  
+ Est. SPECint(R)_base2006              39.0
+ Est. SPECint2006                                                   Not Run
+
+
+                                   HARDWARE
+                                   --------
+            CPU Name: Intel Core i7-8550U
+ CPU Characteristics:  
+             CPU MHz: 3200
+                 FPU: Integrated
+      CPU(s) enabled: 4 cores, 1 chip, 2 cores/chip, 2 threads/core
+    CPU(s) orderable: 1,2 chips
+       Primary Cache: 9999 KB I + 9999 KB D on chip per core
+     Secondary Cache: 9999 KB I+D on chip per core
+            L3 Cache: 9999 MB I+D on chip per chip
+         Other Cache: None
+              Memory: 16 GB
+                      15.370 GB fixme: If using DDR3, format is:
+                      'N GB (M x N GB nRxn PCn-nnnnnR-n, ECC)'
+      Disk Subsystem: 468 GB  add more disk info here
+      Other Hardware: None
+
+
+                                   SOFTWARE
+                                   --------
+    Operating System: Ubuntu 18.04.1 LTS
+                      4.20.10
+            Compiler: gcc (Ubuntu 7.2.0-8ubuntu3) 7.2.0
+       Auto Parallel: No
+         File System: overlay
+        System State: Run level N (add definition here)
+       Base Pointers: 64-bit
+       Peak Pointers: 64-bit
+      Other Software: None
+
+
+                                 Submit Notes
+                                 ------------
+    'numactl' was used to bind copies to the cores.
+    See the configuration file for details.
+
+                            Operating System Notes
+                            ----------------------
+    'ulimit -s unlimited' was used to set environment stack size
+
+                                Platform Notes
+                                --------------
+     Sysinfo program /spec/Docs/sysinfo
+     $Rev: 6775 $ $Date:: 2011-08-16 #$ 8787f7622badcf24e01c368b1db4377c
+     running on 02c5ad7f36bf Tue Feb 19 20:46:02 2019
+    
+     This section contains SUT (System Under Test) info as seen by
+     some common utilities.  To remove or add to this section, see:
+       http://www.spec.org/cpu2006/Docs/config.html#sysinfo
+    
+     From /proc/cpuinfo
+        model name : Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz
+           1 "physical id"s (chips)
+           8 "processors"
+        cores, siblings (Caution: counting these is hw and system dependent.  The
+        following excerpts from /proc/cpuinfo might not be reliable.  Use with
+        caution.)
+           cpu cores : 4
+           siblings  : 8
+           physical 0: cores 0 1 2 3
+        cache size : 8192 KB
+    
+     From /proc/meminfo
+        MemTotal:       16116396 kB
+        HugePages_Total:       0
+        Hugepagesize:       2048 kB
+    
+     /usr/bin/lsb_release -d
+        Ubuntu 18.04.1 LTS
+    
+     From /etc/*release* /etc/*version*
+        debian_version: buster/sid
+        os-release:
+           NAME="Ubuntu"
+           VERSION="18.04.1 LTS (Bionic Beaver)"
+           ID=ubuntu
+           ID_LIKE=debian
+           PRETTY_NAME="Ubuntu 18.04.1 LTS"
+           VERSION_ID="18.04"
+           HOME_URL="https://www.ubuntu.com/"
+           SUPPORT_URL="https://help.ubuntu.com/"
+    
+     uname -a:
+        Linux 02c5ad7f36bf 4.20.10 #34 SMP Mon Feb 18 17:05:30 PST 2019 x86_64 x86_64
+        x86_64 GNU/Linux
+    
+    
+     SPEC is set to: /spec
+        Filesystem     Type     Size  Used Avail Use% Mounted on
+        overlay        overlay  468G  157G  288G  36% /
+    
+     (End of data from sysinfo program)
+
+                              Base Unknown Flags
+                              ------------------
+  400.perlbench: "/usr/local/bin/mstat" (in CC)
+                 "/usr/local/bin/mstat" (in LD) "-std=gnu89" (in COPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+      401.bzip2: "/usr/local/bin/mstat" (in CC)
+                 "/usr/local/bin/mstat" (in LD) "-std=gnu89" (in COPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+        403.gcc: "/usr/local/bin/mstat" (in CC)
+                 "/usr/local/bin/mstat" (in LD) "-std=gnu89" (in COPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+        429.mcf: "/usr/local/bin/mstat" (in CC)
+                 "/usr/local/bin/mstat" (in LD) "-std=gnu89" (in COPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+      445.gobmk: "/usr/local/bin/mstat" (in CC)
+                 "/usr/local/bin/mstat" (in LD) "-std=gnu89" (in COPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+      456.hmmer: "/usr/local/bin/mstat" (in CC)
+                 "/usr/local/bin/mstat" (in LD) "-std=gnu89" (in COPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+      458.sjeng: "/usr/local/bin/mstat" (in CC)
+                 "/usr/local/bin/mstat" (in LD) "-std=gnu89" (in COPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+ 462.libquantum: "/usr/local/bin/mstat" (in CC)
+                 "/usr/local/bin/mstat" (in LD) "-std=gnu89" (in COPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+    464.h264ref: "/usr/local/bin/mstat" (in CC)
+                 "/usr/local/bin/mstat" (in LD) "-std=gnu89" (in COPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+    471.omnetpp: "/usr/local/bin/mstat" (in CXX)
+                 "/usr/local/bin/mstat" (in LD) "-std=c++98" (in CXXOPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+      473.astar: "/usr/local/bin/mstat" (in CXX)
+                 "/usr/local/bin/mstat" (in LD) "-std=c++98" (in CXXOPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+  483.xalancbmk: "/usr/local/bin/mstat" (in CXX)
+                 "/usr/local/bin/mstat" (in LD) "-std=c++98" (in CXXOPTIMIZE)
+                 "-lmesh" (in LIBS)
+
+
+                           Base Compiler Invocation
+                           ------------------------
+C benchmarks: 
+     gcc
+
+C++ benchmarks: 
+     g++
+
+
+                            Base Portability Flags
+                            ----------------------
+  400.perlbench: -DSPEC_CPU_LP64 -DSPEC_CPU_LINUX_X64
+      401.bzip2: -DSPEC_CPU_LP64
+        403.gcc: -DSPEC_CPU_LP64
+        429.mcf: -DSPEC_CPU_LP64
+      445.gobmk: -DSPEC_CPU_LP64
+      456.hmmer: -DSPEC_CPU_LP64
+      458.sjeng: -DSPEC_CPU_LP64
+ 462.libquantum: -DSPEC_CPU_LP64 -DSPEC_CPU_LINUX
+    464.h264ref: -DSPEC_CPU_LP64
+    471.omnetpp: -DSPEC_CPU_LP64
+      473.astar: -DSPEC_CPU_LP64
+  483.xalancbmk: -DSPEC_CPU_LP64 -DSPEC_CPU_LINUX
+
+
+                           Base Optimization Flags
+                           -----------------------
+C benchmarks: 
+     -O2 -fno-strict-aliasing
+
+C++ benchmarks: 
+     -O2 -fno-strict-aliasing
+
+
+    SPEC and SPECint are registered trademarks of the Standard Performance
+    Evaluation Corporation.  All other brand and product names appearing
+    in this result are trademarks or registered trademarks of their
+    respective holders.
+##############################################################################
+#   INVALID RUN -- INVALID RUN -- INVALID RUN -- INVALID RUN -- INVALID RUN  #
+#                                                                            #
+# Your run was marked invalid because it has one or more flags in the        #
+# "unknown" category. You might be able to resolve this problem without      #
+# re-running your test; see                                                  #
+#      http://www.spec.org/cpu2006/Docs/runspec.html#flagsurl                #
+# for more information.                                                      #
+#                                                                            #
+#   INVALID RUN -- INVALID RUN -- INVALID RUN -- INVALID RUN -- INVALID RUN  #
+##############################################################################
+-----------------------------------------------------------------------------
+For questions about this result, please contact the tester.
+For other inquiries, please contact webmaster@spec.org.
+Copyright 2006-2019 Standard Performance Evaluation Corporation
+Tested with SPEC CPU2006 v1.2.
+Report generated on Tue Feb 19 23:43:09 2019 by CPU2006 ASCII formatter v6400.
