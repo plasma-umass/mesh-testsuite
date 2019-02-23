@@ -18,3 +18,5 @@ RUN apt-get update && apt-get install -y \
 COPY install-packages.r /tmp/install-packages.r
 
 RUN R --vanilla --silent --no-readline </tmp/install-packages.r
+
+WORKDIR /

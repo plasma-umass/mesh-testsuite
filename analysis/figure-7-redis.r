@@ -46,4 +46,4 @@ p <- ggplot() +
         axis.text.x = element_text(angle = 0, hjust = 1)
     )
 
-ggsave(p, filename='redis-lru.pdf', width=3.4, height=1.5)
+ggsave(p, filename='results/1-redis/figure-7-redis.pdf', width=3.4, height=1.5)

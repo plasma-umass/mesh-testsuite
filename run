@@ -11,11 +11,11 @@ SPEC_FLAGS='--no-ref'
 
 RUN_FLAGS="--privileged --rm --mount type=volume,src=$VOLUME,dst=/data"
 
-docker volume rm "$VOLUME" || true
-docker volume create "$VOLUME" || true
+# docker volume rm "$VOLUME" || true
+# docker volume create "$VOLUME" || true
 
 TEST='1-redis'
-docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
+# docker run $RUN_FLAGS bpowers/mesh-artifact-$TEST ./test --runs $RUN_COUNT --data-dir=/data/$TEST
 
 TEST='2-spec'
 # (cd 2-spec/runner && ./test $SPEC_FLAGS --volume=$VOLUME)
@@ -26,10 +26,13 @@ TEST='3-ruby'
 TEST='0-firefox'
 # docker run $RUN_FLAGS --ipc=host -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY "$(cat ./$TEST/IMAGE-NAME)" ./entrypoint.sh $RUN_COUNT
 
-sudo rm -rf ./results-old
-if [ -d ./results ]; then
-    mv ./results ./results-old
-fi
-mkdir -p ./results
+# sudo rm -rf ./results-old
+# if [ -d ./results ]; then
+#     mv ./results ./results-old
+# fi
+# mkdir -p ./results
 
-docker run $RUN_FLAGS --mount type=bind,src=$PWD/results,dst=/results bpowers/mesh-artifact-$TEST sh -c 'cp -r /data/* /results/'
+
+docker run $RUN_FLAGS --mount type=bind,src=$PWD/results,dst=/results --mount type=bind,src=$PWD/analysis,dst=/analysis bpowers/mesh-artifact-support sh -c 'SOURCE_DATE_EPOCH=0 R --vanilla <analysis/figure-7-redis.r'
+
+# docker run $RUN_FLAGS --mount type=bind,src=$PWD/results,dst=/results bpowers/mesh-artifact-$TEST sh -c 'cp -r /data/* /results/'
