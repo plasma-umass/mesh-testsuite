@@ -1,2 +1,4 @@
-mesh	60.48	289525760	174157824	82	/opt/firefox-57.0.4-nojemalloc/lib/firefox-57.0.4/firefox
-jemalloc	65.64	315531264	207192064	277	/opt/firefox-57.0.4-jemalloc/lib/firefox-57.0.4/firefox
+mesh	64.31	291053568	177152000	83	/opt/firefox-57.0.4-nojemalloc/lib/firefox-57.0.4/firefox
+jemalloc	67.17	315899904	208850944	284	/opt/firefox-57.0.4-jemalloc/lib/firefox-57.0.4/firefox
+mesh	64.61	291508224	177422336	492	/opt/firefox-57.0.4-nojemalloc/lib/firefox-57.0.4/firefox
+jemalloc	65.99	318197760	210591744	688	/opt/firefox-57.0.4-jemalloc/lib/firefox-57.0.4/firefox

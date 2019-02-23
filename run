@@ -9,7 +9,7 @@ xhost local:root
 
 VOLUME="mesh-artifact-data"
 
-RUN_COUNT='1'
+RUN_COUNT='2'
 SPEC_FLAGS='--no-ref'
 FF_WAIT_SECS="$(head -n 1 firefox-wait-seconds)"
 
@@ -53,10 +53,10 @@ sudo chown -R $USER results
 # delete results for short-lived subprocesses firefox spawns
 find results/0-firefox/memory -name '*.tsv' -size -10k -delete
 
-# ./analysis/0-firefox.py
-# ./analysis/1-redis.py
-# ./analysis/2-spec.py
-# ./analysis/3-ruby.py
+./analysis/0-firefox.py
+./analysis/1-redis.py
+./analysis/2-spec.py
+./analysis/3-ruby.py
 
 (cd results/0-firefox/memory; rm -f jemalloc.tsv; ln -s $(ls -t speedometer.jemalloc*.tsv | head -n 1) jemalloc.tsv)
 (cd results/0-firefox/memory; rm -f mesh.tsv; ln -s $(ls -t speedometer.mesh*.tsv | head -n 1) mesh.tsv)
