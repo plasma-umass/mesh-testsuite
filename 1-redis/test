@@ -161,16 +161,20 @@ def test_perf(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
         print('%s\t%.3f' % (config.name, duration_secs))
 
 
-def getpid(name):
-    getpid_cmd = run_cmd('ps -u %s' % os.getuid()).join()
-    lines = getpid_cmd.stdout.decode('utf8').splitlines()
-    candidates = [l for l in lines if name in l]
-    if len(candidates) > 1:
-        raise Exception('multiple %s running!' % name)
-    elif len(candidates) == 0:
-        raise Exception('couldn\'t find %s' % name)
-    log(DEBUG, 'candidates: %s', (candidates,))
-    return int(candidates[-1].split()[0])
+def getpid(name, tries=10, sleep_secs=0.1):
+    for i in range(tries):
+        getpid_cmd = run_cmd('ps -u %s' % os.getuid()).join()
+        lines = getpid_cmd.stdout.decode('utf8').splitlines()
+        candidates = [l for l in lines if name in l]
+        if len(candidates) > 1:
+            raise Exception('multiple %s running!' % name)
+        elif len(candidates) == 1:
+            log(DEBUG, 'candidates: %s', (candidates,))
+            return int(candidates[-1].split()[0])
+        else:
+            time.sleep(sleep_secs) # give the server a change to start
+
+    raise Exception('couldn\'t find %s' % name)
 
 
 def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=False, data_dir='.'):
