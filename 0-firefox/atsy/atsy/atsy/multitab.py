@@ -196,15 +196,21 @@ class MultiTabTest(BaseMultiTabTest):
                 # print 'ignoring unknown selenium exception'
                 pass
 
-            time.sleep(1)
+            time.sleep(2)
             self.driver.switch_to_window(self.driver.window_handles[-1])
 
-            time.sleep(self.per_tab_pause)
+            score = None
+            while not score:
+                time.sleep(10)
 
-            score_el = self.driver.find_element_by_id('result-number')
-            score = score_el.get_attribute('innerHTML')
+                # sometimes we can't find the element - no worries if not
+                try:
+                    score_el = self.driver.find_element_by_id('result-number')
+                    score = score_el.get_attribute('innerHTML')
+                except WebDriverException:
+                    pass
 
-        time.sleep(self.settle_wait_time)
+        time.sleep(10)
         # print('SCORE\t{}'.format(score))
         self.stats.print_stats(score=score)
         ActionChains(self.driver).key_down(ctrl_key).send_keys('q').key_up(ctrl_key).perform()
