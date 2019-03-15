@@ -218,7 +218,7 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
         server_cmd = run_cmd(cmd)
 
         start = time.time()
-        time.sleep(.1) # sleep for 100 ms to give server time to start
+        time.sleep(.4) # sleep for 100 ms to give server time to start
         server_pid = getpid('redis-server')
 
         client = run_cmd('cat %s | %s' % (TEST_SCRIPT, REDIS_CLI)).join()
@@ -252,7 +252,7 @@ def test_frag(detailed_mesh_stats=False, enabled_configs=None, latency_stats=Fal
             log(DEBUG, 'aint nobody got time for sleeping')
 
         run_cmd('kill %d' % server_pid).join()
-        time.sleep(.3) # give mstat a chance to finish up
+        time.sleep(1.2) # give mstat a chance to finish up
         server_cmd.end()
         server_cmd.join()
 
@@ -300,7 +300,7 @@ def test_fragperf(detailed_mesh_stats=False, enabled_configs=None, latency_stats
                 del os.environ['LD_PRELOAD']
 
             start = time.time()
-            time.sleep(.1) # sleep for 100 ms to give server time to start
+            time.sleep(.4) # sleep for 100 ms to give server time to start
             server_pid = getpid('redis-server')
 
             start = time.time()
@@ -312,7 +312,7 @@ def test_fragperf(detailed_mesh_stats=False, enabled_configs=None, latency_stats
             results.write(result_row)
 
             run_cmd('kill %d' % server_pid).join()
-            time.sleep(.3) # give mstat a chance to finish up
+            time.sleep(1.2) # give mstat a chance to finish up
             server_cmd.end()
             server_cmd.join()
 
