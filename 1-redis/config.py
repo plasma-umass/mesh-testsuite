@@ -17,5 +17,6 @@ configs = [
     Config('mesh1y',        'USE_JEMALLOC=no',          '-Wl,--no-as-needed -lmesh1y'),
     Config('mesh2y',        'USE_JEMALLOC=no',          '-Wl,--no-as-needed -lmesh2y'),
     Config('tcmalloc',      'USE_TCMALLOC_MINIMAL=yes'),
+    Config('hoard',         'USE_JEMALLOC=no',          '-Wl,--no-as-needed -lhoard -L/usr/local/lib'),
     Config('jemalloc',      'USE_JEMALLOC=yes',         defrag=True),
 ]
