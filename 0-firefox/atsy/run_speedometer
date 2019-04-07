@@ -24,6 +24,22 @@ sleep 5
 pkill geckodriver || true
 pkill firefox || true
 
+export TEST_LD_PRELOAD=libhoard.so
+export TEST_NAME=hoard
+env/bin/python atsy/example/comp_analysis.py -c atsy/example/comp_analysis_conf_speedometer.py --content-processes 0 -b Firefox --per_tab_pause $TEST_WAIT_SECS --settle_wait_time 1 | tee -a /data/0-firefox/speed/results.tsv
+
+sleep 5
+pkill geckodriver || true
+pkill firefox || true
+
+export TEST_LD_PRELOAD=libtcmalloc_minimal.so
+export TEST_NAME=tcmalloc
+env/bin/python atsy/example/comp_analysis.py -c atsy/example/comp_analysis_conf_speedometer.py --content-processes 0 -b Firefox --per_tab_pause $TEST_WAIT_SECS --settle_wait_time 1 | tee -a /data/0-firefox/speed/results.tsv
+
+sleep 5
+pkill geckodriver || true
+pkill firefox || true
+
 unset TEST_LD_PRELOAD
 unset MALLOCSTATS
 export TEST_NAME=jemalloc
